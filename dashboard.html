@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Student Portfolio Dashboard - Manage your profile, education, skills, and projects">
+    <title>ProFolio — Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Mobile Toggle -->
+    <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-profile">
+                    <div class="sidebar-avatar" id="sidebarAvatar"></div>
+                    <div class="sidebar-info">
+                        <h3 id="sidebarName">Student</h3>
+                        <p id="sidebarDesignation">Student</p>
+                        <span class="role-badge" id="sidebarRoleBadge">Student</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-label">Dashboard</div>
+                <div class="nav-item active" data-section="profile" onclick="switchSection('profile')">
+                    <span class="nav-icon">👤</span> Profile
+                </div>
+                <div class="nav-item" data-section="education" onclick="switchSection('education')">
+                    <span class="nav-icon">🎓</span> Education
+                </div>
+                <div class="nav-item" data-section="skills" onclick="switchSection('skills')">
+                    <span class="nav-icon">⚡</span> Skills
+                </div>
+                <div class="nav-item" data-section="hobbies" onclick="switchSection('hobbies')">
+                    <span class="nav-icon">🎨</span> Hobbies & Interests
+                </div>
+                <div class="nav-item" data-section="projects" onclick="switchSection('projects')">
+                    <span class="nav-icon">🚀</span> Projects
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="handleLogout()">
+                    <span>🚪</span> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- ===== PROFILE SECTION ===== -->
+            <div class="dashboard-section active" id="section-profile">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                    <p>Manage your personal information and profile photo</p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar" id="profileAvatar"
+                            onclick="document.getElementById('avatarUpload').click()">
+                            <span id="profileAvatarInitial"></span>
+                            <div class="avatar-overlay">📷</div>
+                            <input type="file" id="avatarUpload" accept="image/*" style="display:none"
+                                onchange="handleAvatarUpload(event)">
+                        </div>
+                        <div class="profile-avatar-info">
+                            <h3 id="profileDisplayName">Student</h3>
+                            <p id="profileDisplayDesignation">Student</p>
+                            <span class="role-badge" id="profileRoleBadge">Student</span>
+                        </div>
+                    </div>
+
+                    <form id="profileForm" onsubmit="saveProfile(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName" placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileDesignation">Designation</label>
+                                <input type="text" id="profileDesignation" placeholder="e.g. CS Student">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileEmail">Email Address</label>
+                                <input type="email" id="profileEmail" placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="profilePhone">Phone Number</label>
+                                <input type="tel" id="profilePhone" placeholder="+91 98765 43210">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileDob">Date of Birth</label>
+                                <input type="date" id="profileDob">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileLocation">Location</label>
+                                <input type="text" id="profileLocation" placeholder="City, Country">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileAddress">Address</label>
+                            <textarea id="profileAddress" rows="2" placeholder="Your full address..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileBio">Bio</label>
+                            <textarea id="profileBio" rows="3"
+                                placeholder="Write a short bio about yourself..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="max-width:200px">Save Profile</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ===== EDUCATION SECTION ===== -->
+            <div class="dashboard-section" id="section-education">
+                <div class="section-header">
+                    <h2>Education</h2>
+                    <p>Add your educational qualifications</p>
+                </div>
+
+                <button class="add-btn" onclick="openModal('education')">➕ Add Education</button>
+                <div id="educationList"></div>
+            </div>
+
+            <!-- ===== SKILLS SECTION ===== -->
+            <div class="dashboard-section" id="section-skills">
+                <div class="section-header">
+                    <h2>Skills</h2>
+                    <p>Showcase your technical and soft skills</p>
+                </div>
+
+                <button class="add-btn" onclick="openModal('skill')">➕ Add Skill</button>
+                <div id="skillsList"></div>
+            </div>
+
+            <!-- ===== HOBBIES SECTION ===== -->
+            <div class="dashboard-section" id="section-hobbies">
+                <div class="section-header">
+                    <h2>Hobbies & Interests</h2>
+                    <p>Share what you love to do outside of academics</p>
+                </div>
+
+                <button class="add-btn" onclick="openModal('hobby')">➕ Add Hobby</button>
+                <div class="hobby-grid" id="hobbiesList"></div>
+            </div>
+
+            <!-- ===== PROJECTS SECTION ===== -->
+            <div class="dashboard-section" id="section-projects">
+                <div class="section-header">
+                    <h2>Projects</h2>
+                    <p>Showcase your work and personal projects</p>
+                </div>
+
+                <button class="add-btn" onclick="openModal('project')">➕ Add Project</button>
+                <div id="projectsList"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Education Modal -->
+    <div class="modal-overlay" id="modal-education">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="educationModalTitle">Add Education</h3>
+                <button class="btn-icon" onclick="closeModal('education')">✕</button>
+            </div>
+            <form id="educationForm" onsubmit="saveEducation(event)">
+                <input type="hidden" id="eduEditIndex" value="-1">
+                <div class="form-group">
+                    <label for="eduInstitution">Institution</label>
+                    <input type="text" id="eduInstitution" placeholder="e.g. MIT, Stanford University" required>
+                </div>
+                <div class="form-group">
+                    <label for="eduDegree">Degree / Course</label>
+                    <input type="text" id="eduDegree" placeholder="e.g. B.Tech Computer Science" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eduStartYear">Start Year</label>
+                        <input type="text" id="eduStartYear" placeholder="e.g. 2022" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eduEndYear">End Year</label>
+                        <input type="text" id="eduEndYear" placeholder="e.g. 2026 or Present">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eduGrade">Grade / GPA</label>
+                    <input type="text" id="eduGrade" placeholder="e.g. 9.2 CGPA">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('education')">Cancel</button>
+                    <button type="submit" class="btn-primary" style="width:auto">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Skill Modal -->
+    <div class="modal-overlay" id="modal-skill">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="skillModalTitle">Add Skill</h3>
+                <button class="btn-icon" onclick="closeModal('skill')">✕</button>
+            </div>
+            <form id="skillForm" onsubmit="saveSkill(event)">
+                <input type="hidden" id="skillEditIndex" value="-1">
+                <div class="form-group">
+                    <label for="skillName">Skill Name</label>
+                    <input type="text" id="skillName" placeholder="e.g. JavaScript, Python, UI Design" required>
+                </div>
+                <div class="form-group">
+                    <label for="skillLevel">Proficiency Level: <span id="skillLevelValue">50</span>%</label>
+                    <input type="range" id="skillLevel" min="10" max="100" value="50"
+                        oninput="document.getElementById('skillLevelValue').textContent=this.value"
+                        style="width:100%;accent-color:var(--accent-blue)">
+                </div>
+                <div class="form-group">
+                    <label for="skillCategory">Category</label>
+                    <select id="skillCategory">
+                        <option value="Technical">Technical</option>
+                        <option value="Soft Skill">Soft Skill</option>
+                        <option value="Language">Language</option>
+                        <option value="Design">Design</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('skill')">Cancel</button>
+                    <button type="submit" class="btn-primary" style="width:auto">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hobby Modal -->
+    <div class="modal-overlay" id="modal-hobby">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="hobbyModalTitle">Add Hobby</h3>
+                <button class="btn-icon" onclick="closeModal('hobby')">✕</button>
+            </div>
+            <form id="hobbyForm" onsubmit="saveHobby(event)">
+                <input type="hidden" id="hobbyEditIndex" value="-1">
+                <div class="form-group">
+                    <label for="hobbyName">Hobby Name</label>
+                    <input type="text" id="hobbyName" placeholder="e.g. Photography, Gaming, Reading" required>
+                </div>
+                <div class="form-group">
+                    <label for="hobbyEmoji">Emoji Icon</label>
+                    <input type="text" id="hobbyEmoji" placeholder="e.g. 📷, 🎮, 📚" maxlength="4">
+                </div>
+                <div class="form-group">
+                    <label for="hobbyDescription">Short Description</label>
+                    <input type="text" id="hobbyDescription" placeholder="Brief description of your hobby">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('hobby')">Cancel</button>
+                    <button type="submit" class="btn-primary" style="width:auto">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal-overlay" id="modal-project">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="projectModalTitle">Add Project</h3>
+                <button class="btn-icon" onclick="closeModal('project')">✕</button>
+            </div>
+            <form id="projectForm" onsubmit="saveProject(event)">
+                <input type="hidden" id="projectEditIndex" value="-1">
+                <div class="form-group">
+                    <label for="projectTitle">Project Title</label>
+                    <input type="text" id="projectTitle" placeholder="e.g. Portfolio Website" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDesc">Description</label>
+                    <textarea id="projectDesc" rows="3" placeholder="Describe what the project does..."
+                        required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectTech">Technologies Used</label>
+                    <input type="text" id="projectTech" placeholder="e.g. HTML, CSS, JavaScript (comma separated)">
+                </div>
+                <div class="form-group">
+                    <label for="projectLink">Project Link (optional)</label>
+                    <input type="url" id="projectLink" placeholder="https://github.com/...">
+                </div>
+                <div class="form-group">
+                    <label>Project Image</label>
+                    <div class="image-upload" id="projectImageUpload"
+                        onclick="document.getElementById('projectImageInput').click()">
+                        <span class="upload-icon">🖼️</span>
+                        <span class="upload-text">Click to upload an image</span>
+                        <input type="file" id="projectImageInput" accept="image/*" style="display:none"
+                            onchange="handleProjectImageUpload(event)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal('project')">Cancel</button>
+                    <button type="submit" class="btn-primary" style="width:auto">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

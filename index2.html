@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Student Portfolio Dashboard - Create and showcase your professional profile">
+    <title>ProFolio — Student Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <div class="logo-icon">🎓</div>
+                <h1>ProFolio</h1>
+                <p>Your professional student portfolio</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="registerTab" onclick="switchAuthTab('register')">Register</button>
+                <button class="auth-tab" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
+            </div>
+
+            <!-- Register Form -->
+            <form class="auth-form active" id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regDesignation">Designation</label>
+                    <input type="text" id="regDesignation" placeholder="e.g. Computer Science Student" required>
+                </div>
+                <div class="form-group">
+                    <label for="regRole">Role</label>
+                    <select id="regRole" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="Creator">👑 Creator (Admin)</option>
+                        <option value="Learner">📖 Learner</option>
+                        <option value="Student">🎓 Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Create a password" required minlength="4">
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+
+            <!-- Login Form -->
+            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginName">Full Name</label>
+                    <input type="text" id="loginName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
